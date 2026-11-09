@@ -1,5 +1,5 @@
 export const Rotas = {
   infoall: "/",
   posts: "/posts",
-  guia_projetos: "/guiaprojetos",
+  guiaprojetos: "/guia_projetos",
 };
