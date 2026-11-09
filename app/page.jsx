@@ -1,0 +1,14 @@
+import Header from "./componentes/header";
+import Footer from "./componentes/footer";
+
+export default function() {
+    return(
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 py-5">
+                <h1 className="justify-self-center text-3xl font-bold">Descubra mais sobre seu aparelho</h1>
+            </main>
+            <Footer />
+        </div>
+    )
+}
