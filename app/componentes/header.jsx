@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {NavLink} from "react-router-dom";
 import {Rotas} from "../rotas";
 
 export default function() {
@@ -12,9 +13,19 @@ export default function() {
                 </div>
             </header>
             <nav className="items-center justify-center flex flex-row gap-20">
-                <Link href={Rotas.posts} className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500">Posts</Link>
-                <Link href={Rotas.infoall} className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500">Informações sobre aparelhos</Link>
-                <Link href={Rotas.guiaprojetos} className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500">Serviços</Link>
+                <NavLink href={Rotas.posts} 
+                    className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500
+                     { ({isActive}) => isActive ? 'bg-blue-400' : 'bg-none' }">
+                        Posts
+                </NavLink>
+                <NavLink href={Rotas.infoall} 
+                    className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500">
+                        Informações sobre aparelhos
+                </NavLink>
+                <NavLink href={Rotas.guiaprojetos} 
+                    className="hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500">
+                        Serviços
+                </NavLink>
             </nav>
         </div>
     )
