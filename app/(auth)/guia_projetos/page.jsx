@@ -6,7 +6,7 @@ export default function() {
         <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-1 py-5">
-                <h1>Solicitação de serviços</h1>
+                <h1 className="justify-self-center text-3xl font-bold">Solicitação de serviços</h1>
             </main>
             <Footer />
         </div>
