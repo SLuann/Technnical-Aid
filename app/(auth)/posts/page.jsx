@@ -69,7 +69,7 @@ export default function () {
                     </button>
                 </div>
                 <div className="px-10 py-6">
-                    <h2 className="text-xl font-bold">Meus posts</h2>
+                    <h2 className="text-xl font-bold pb-5">Meus posts</h2>
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {posts.length === 0 ? (
                             <p className="text-gray-500 py-5">
@@ -83,7 +83,7 @@ export default function () {
                                     key={post.id}
                                     className="w-full min-w-0 max-w-full max-h-[500px]
                                     overflow-y-auto break-words [overflow-wrap:anywhere]
-                                    border border-blue-500 rounded-lg p-5" >
+                                    border border-blue-500 rounded-lg bg-black p-5" >
 
                                     <h2 className="text-xl font-bold mb-3 break-words">
                                         {post.titulo}
@@ -103,7 +103,7 @@ export default function () {
                                     <div className="flex justify-end gap-3 mt-5 pt-3 border-t border-gray-400">
                                         <button
                                             onClick={() => editarPost(post)}
-                                            className="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" >
+                                            className="bg-blue-900 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" >
                                             Editar
                                         </button>
                                         <button
