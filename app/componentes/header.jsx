@@ -26,9 +26,9 @@ export default function() {
                     ${pathname === Rotas.infoall ? "bg-zinc-700" : "bg-none"} `}>
                         Informações sobre aparelhos
                 </Link>
-                <Link href={Rotas.guiaprojetos} 
+                <Link href={Rotas.services} 
                     className={`flex items-center justify-center hover:text-blue-700 hover:font-medium hover:border-b-3 border-gray-500 w-[150px] rounded-t
-                    ${pathname === Rotas.guiaprojetos ? "bg-zinc-700" : "bg-none"} `}>
+                    ${pathname === Rotas.services ? "bg-zinc-700" : "bg-none"} `}>
                         Serviços
                 </Link>
             </nav>
