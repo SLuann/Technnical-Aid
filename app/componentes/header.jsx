@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {Rotas} from "../rotas";
+import Logo from "../image/image.png";
 
 export default function() {
-    const  pathname = usePathname();
+    const pathname = usePathname();
     return(
         <div className="px-3 flex flex-col border-b-2 border-zinc-700 gap-3">
             <header className="flex flex-row items-center justify-between h-20">
-                <Link href={Rotas.infoall} className="text-5xl font-bold">Technnical Aid</Link>
-                <div className="flex gap-5">
+                <Link href={Rotas.infoall} className="">
+                    <img src={Logo.src} alt="Technnical Aid" className="py-3 w-[600px] h-[200px]"/>
+                </Link>
+                <div className="flex gap-5 items-center">
                     <Link href={Rotas.infoall} className="text-lg font-medium">Cadastre-se</Link>
                     <Link href={Rotas.infoall} className="text-lg font-medium">Entrar</Link>
                 </div>
