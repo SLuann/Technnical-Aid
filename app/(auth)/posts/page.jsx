@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../componentes/header";
 import Footer from "../../componentes/footer";
 
@@ -17,44 +17,79 @@ export default function () {
     const [editandoId, setEditandoId] = useState(null);
     const [postSelecionado, setPostSelecionado] = useState(null);
 
-    function excluirPost(id) {
-        setPosts(posts.filter((post) => post.id !== id));
+    const [logado, setLogado] = useState(true);
+    const [erro, setErro] = useState("");
+
+    async function carregarPosts() {
+        const res = await fetch("/api/posts?meus=1");
+        if (res.status === 401) {
+            setLogado(false);
+            setPosts([]);
+            return;
+        }
+        const data = await res.json();
+        setLogado(true);
+        setPosts(data.posts ?? []);
+    }
+
+    useEffect(() => {
+        carregarPosts();
+    }, []);
+
+    function abrirNovo() {
+        setTitulo("");
+        setConteudo("");
+        setEditandoId(null);
+        setErro("");
+        setJanelaAberto(true);
+    }
+
+    function fecharJanela() {
+        setTitulo("");
+        setConteudo("");
+        setEditandoId(null);
+        setErro("");
+        setJanelaAberto(false);
+    }
+
+    async function excluirPost(id) {
+        if (!confirm("Excluir este post?")) return;
+        const res = await fetch(`/api/posts/${id}`, { method: "DELETE" });
+        if (res.ok) {
+            carregarPosts();
+        } else {
+            const data = await res.json();
+            alert(data.erro ?? "Erro ao excluir.");
+        }
     }
 
     function editarPost(post) {
         setTitulo(post.titulo);
         setConteudo(post.conteudo);
-
         setEditandoId(post.id);
+        setErro("");
         setJanelaAberto(true);
     }
 
-    function criarPost(e) {
+    async function criarPost(e) {
         e.preventDefault();
+        setErro("");
 
-        if (editandoId !== null) {
+        const editando = editandoId !== null;
+        const res = await fetch(editando ? `/api/posts/${editandoId}` : "/api/posts", {
+            method: editando ? "PATCH" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ titulo, conteudo }),
+        });
+        const data = await res.json();
 
-            setPosts(posts.map((post) =>
-                post.id === editandoId
-                    ? { ...post, titulo, conteudo }
-                    : post
-            ));
-
-        } else {
-
-            const novoPost = {
-                id: Date.now(),
-                titulo,
-                conteudo
-            };
-
-            setPosts([...posts, novoPost]);
+        if (!res.ok) {
+            setErro(data.erro ?? "Erro ao salvar o post.");
+            return;
         }
 
-        setTitulo("");
-        setConteudo("");
-        setEditandoId(null);
-        setJanelaAberto(false);
+        fecharJanela();
+        carregarPosts();
     }
 
     return (
@@ -63,7 +98,7 @@ export default function () {
             <main className="flex-1 py-5">
                 <h1 className="justify-self-center text-3xl font-bold">Posts da comunidade</h1>
                 <div className="flex justify-end pt-5 pr-10">
-                    <button onClick={() => setJanelaAberto(true)}
+                    <button onClick={abrirNovo}
                         className="bg-zinc-700 hover:bg-zinc-500 border border-blue-700 rounded w-[100px] h-[35px]">
                         Novo Post
                     </button>
@@ -73,7 +108,7 @@ export default function () {
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {posts.length === 0 ? (
                             <p className="text-gray-500 py-5">
-                                Você ainda não criou nenhum post.
+                                {logado ? "Você ainda não criou nenhum post." : "Faça login para ver e criar seus posts."}
                             </p>
                         ) : (
 
@@ -123,10 +158,10 @@ export default function () {
                         <div className="bg-zinc-900 p-6 rounded-xl w-full max-w-lg mx-4">
                             <div className="flex justify-between items-center mb-5">
                                 <h2 className="text-blue-800 text-2xl font-bold">
-                                    Criar novo post
+                                    {editandoId ? "Editar post" : "Criar novo post"}
                                 </h2>
                                 <button
-                                    onClick={() => setJanelaAberto(false)}
+                                    onClick={fecharJanela}
                                     className="text-gray-400 text-xl">
                                     ✕
                                 </button>
@@ -156,10 +191,11 @@ export default function () {
                                         rows="5"
                                         className="w-full border rounded-lg p-3 resize-none" />
                                 </div>
+                                {erro && <p className="text-red-500">{erro}</p>}
                                 <div className="flex justify-end gap-3">
                                     <button
                                         type="button"
-                                        onClick={() => setJanelaAberto(false)}
+                                        onClick={fecharJanela}
                                         className="px-4 py-2 border rounded-lg hover:bg-zinc-500" >
                                         Cancelar
                                     </button>
