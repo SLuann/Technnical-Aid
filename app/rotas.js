@@ -2,7 +2,7 @@ export const Rotas = {
   infoall: "/",
   posts: "/posts",
   services: "/services",
-  celAcer: "/celAcer",
+  celS25: "/celS25",
   notAcer: "/notAcer",
   pc: "/pc",
 };

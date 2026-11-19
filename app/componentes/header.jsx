@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {Rotas} from "../rotas";
-import Logo from "../image/image.png";
+import Logo from "../image/Logo.png";
 
 export default function() {
     const pathname = usePathname();
