@@ -1,6 +1,10 @@
+import Link from "next/link";
+import {Rotas} from "../../rotas";
+
 export default function () {
     return (
         <div className="flex flex-col gap-5 mx-10">
+            <Link href={Rotas.infoall} className="flex text-lg font-medium text-gray-300 hover:text-zinc-600 hover:underline">Voltar à página principal</Link>
             <h1 className="text-4xl font-bold text-center">Celular Samsung Galaxy S25 5G</h1>
             <div className="flex flex-row">
                 <img src="https://i.ibb.co/tGFcL9C/250050-600-auto-removebg-preview.png"
