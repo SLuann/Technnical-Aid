@@ -8,8 +8,8 @@ export default function() {
         <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-1 py-5">
-                <h1 className="justify-self-center text-3xl font-bold">Descubra mais sobre seu aparelho</h1>
-                <div className="flex flex-col py-10 px-8 gap-5">
+                <h1 className="justify-self-center text-center text-xl md:text-3xl font-bold">Descubra mais sobre seu aparelho</h1>
+                <div className="flex flex-col py-5 md:py-10 px-2 md:px-8 gap-5">
                     <div>
                         <h2 className="text-lg font-medium">Celulares</h2>
                         <div className="flex flex-col gap-2 p-2 bg-blue-300/30 items-center justify-center border border-blue-400 shadow shadow-blue-400 w-[200px] h-[250px]">
