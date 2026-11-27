@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.1",
-    "@tailwindcss/oxide-win32-x64-msvc": "^4.3.5",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.17",
     "next": "16.4.5",
