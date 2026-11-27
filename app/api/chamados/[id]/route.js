@@ -1,29 +1,26 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
-import { getSession } from '@/lib/auth';
+import { lerVisitante } from '@/lib/visitante';
+import { ehAdmin } from '@/lib/admin';
 
 const STATUS = ['aberto', 'em_andamento', 'concluido', 'cancelado'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export async function GET(_req, { params }) {
-  const sessao = await getSession();
-  if (!sessao) return NextResponse.json({ erro: 'Faça login.' }, { status: 401 });
-
+export async function GET(req, { params }) {
   const { id } = await params;
   if (!UUID.test(id)) return NextResponse.json({ erro: 'ID inválido.' }, { status: 400 });
 
   const [chamado] = await sql`SELECT * FROM chamados WHERE id = ${id}`;
-  if (!chamado || (sessao.role !== 'admin' && chamado.usuario_id !== sessao.id))
+  const visitante = await lerVisitante();
+  if (!chamado || (!ehAdmin(req) && chamado.visitante_id !== visitante))
     return NextResponse.json({ erro: 'Chamado não encontrado.' }, { status: 404 });
 
   return NextResponse.json({ chamado });
 }
 
 export async function PATCH(req, { params }) {
-  const sessao = await getSession();
-  if (!sessao) return NextResponse.json({ erro: 'Faça login.' }, { status: 401 });
-  if (sessao.role !== 'admin')
-    return NextResponse.json({ erro: 'Apenas administradores.' }, { status: 403 });
+  if (!ehAdmin(req))
+    return NextResponse.json({ erro: 'Apenas administrador.' }, { status: 403 });
 
   const { id } = await params;
   if (!UUID.test(id)) return NextResponse.json({ erro: 'ID inválido.' }, { status: 400 });

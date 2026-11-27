@@ -17,18 +17,11 @@ export default function () {
     const [editandoId, setEditandoId] = useState(null);
     const [postSelecionado, setPostSelecionado] = useState(null);
 
-    const [logado, setLogado] = useState(true);
     const [erro, setErro] = useState("");
 
     async function carregarPosts() {
         const res = await fetch("/api/posts?meus=1");
-        if (res.status === 401) {
-            setLogado(false);
-            setPosts([]);
-            return;
-        }
         const data = await res.json();
-        setLogado(true);
         setPosts(data.posts ?? []);
     }
 
@@ -108,7 +101,7 @@ export default function () {
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {posts.length === 0 ? (
                             <p className="text-gray-500 py-5">
-                                {logado ? "Você ainda não criou nenhum post." : "Faça login para ver e criar seus posts."}
+                                Você ainda não criou nenhum post.
                             </p>
                         ) : (
 

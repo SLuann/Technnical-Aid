@@ -17,6 +17,8 @@ export default function () {
     const [servicoAtivo, setServicoAtivo] = useState(null);
     const [aparelho, setAparelho] = useState("");
     const [descricao, setDescricao] = useState("");
+    const [nome, setNome] = useState("");
+    const [contato, setContato] = useState("");
     const [erro, setErro] = useState("");
     const [enviando, setEnviando] = useState(false);
 
@@ -37,19 +39,10 @@ export default function () {
         carregar();
     }, []);
 
-    async function abrirSolicitacao(servico) {
+    function abrirSolicitacao(servico) {
         setAviso(null);
-        try {
-            const res = await fetch("/api/auth/me");
-            const { usuario } = await res.json();
-            if (!usuario) {
-                setAviso({ tipo: "erro", texto: "Faça login para solicitar um serviço." });
-                return;
-            }
-        } catch {
-            setAviso({ tipo: "erro", texto: "Erro ao verificar o login." });
-            return;
-        }
+        setNome("");
+        setContato("");
         setAparelho("");
         setDescricao("");
         setErro("");
@@ -69,7 +62,7 @@ export default function () {
             const res = await fetch("/api/chamados", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ servico: servicoAtivo.slug, aparelho, descricao }),
+                body: JSON.stringify({ servico: servicoAtivo.slug, nome, contato, aparelho, descricao }),
             });
             const data = await res.json();
             if (!res.ok) {
@@ -128,6 +121,30 @@ export default function () {
                                 </button>
                             </div>
                             <form onSubmit={enviar} className="flex flex-col gap-4">
+                                <div>
+                                    <label className="text-gray-400 block mb-2">
+                                        Seu nome
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={nome}
+                                        onChange={(e) => setNome(e.target.value)}
+                                        required
+                                        maxLength={100}
+                                        className="w-full border rounded-lg p-3" />
+                                </div>
+                                <div>
+                                    <label className="text-gray-400 block mb-2">
+                                        Contato (WhatsApp ou e-mail)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={contato}
+                                        onChange={(e) => setContato(e.target.value)}
+                                        required
+                                        maxLength={150}
+                                        className="w-full border rounded-lg p-3" />
+                                </div>
                                 <div>
                                     <label className="text-gray-400 block mb-2">
                                         Aparelho (opcional)
